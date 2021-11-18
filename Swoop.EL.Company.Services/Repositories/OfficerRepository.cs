@@ -4,6 +4,7 @@ using Swoop.EL.Company.DAL.DTO;
 using Swoop.EL.Company.DAL.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,6 +24,9 @@ namespace Swoop.EL.Company.DAL.Repositories
 
         public async Task<List<Officer>> SearchOfficers(string companyNumber, int numberOfItems, bool? status = null, int? age = null)
         {
+            if (string.IsNullOrEmpty(companyNumber))
+                throw new ArgumentException("CompanyNumber is mandatory to retrieve Officers");
+
             using var client = httpClientFactory.CreateClient();
 
             client.DefaultRequestHeaders.Add("Authorization", $"Basic {Convert.ToBase64String(Encoding.ASCII.GetBytes(customAppSettings.ApiKey))}");
@@ -36,11 +40,19 @@ namespace Swoop.EL.Company.DAL.Repositories
             }
 
             string content = await result.Content.ReadAsStringAsync();
-            var companiesSearch = JsonConvert.DeserializeObject<SearchOfficerResult>(content).items;
+            var officersSearch = JsonConvert.DeserializeObject<SearchOfficerResult>(content).items;
 
-            List<DTO.Officer> officers = new List<DTO.Officer>();
+            //there's no filter in the API itself, so that's why we filter in code
+            if (status.HasValue)
+            {
+                //TODO: don't know how to filter only active ones, didn't find it in the API docs
+                officersSearch = officersSearch.Where(c => c.name != null).ToArray();
+            }
 
-            return officers;
+            if (age.HasValue)
+                officersSearch = officersSearch.Where(c => c.age == age).ToArray();
+
+            return officersSearch.ToList();
         }
     }
 }

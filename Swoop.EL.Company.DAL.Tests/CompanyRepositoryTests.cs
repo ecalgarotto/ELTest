@@ -22,10 +22,8 @@ namespace Swoop.EL.Company.DAL.Tests
 
         public CompanyRepositoryTests()
         {
-            SetupConfiguration();
-
             mockHttpClientFactory = new Mock<IHttpClientFactory>();
-            var client = new HttpClient(new DelegatingHandlerStub());            
+            var client = new HttpClient(new CompanyDelegatingHandlerStub());            
             mockHttpClientFactory.Setup(_ => _.CreateClient(It.IsAny<string>())).Returns(client);
             IHttpClientFactory factory = mockHttpClientFactory.Object;
             Mock<IOfficerRepository> mockOfficerRepository = new Mock<IOfficerRepository>();
@@ -50,11 +48,6 @@ namespace Swoop.EL.Company.DAL.Tests
             
         }
 
-        private void SetupConfiguration()
-        {
-
-        }
-
         [Fact]
         public async void GetCompaniesByName_OK()
         {
@@ -62,7 +55,7 @@ namespace Swoop.EL.Company.DAL.Tests
 
             Assert.NotNull(companies);
             Assert.NotEmpty(companies);
-            Assert.Equal(1, companies.Count);
+            Assert.Single(companies);
         }
 
         [Fact]
@@ -99,15 +92,15 @@ namespace Swoop.EL.Company.DAL.Tests
         }
     }
 
-    public class DelegatingHandlerStub : DelegatingHandler
+    public class CompanyDelegatingHandlerStub : DelegatingHandler
     {
         private readonly Func<HttpRequestMessage, CancellationToken, Task<HttpResponseMessage>> _handlerFunc;
-        public DelegatingHandlerStub()
+        public CompanyDelegatingHandlerStub()
         {
             _handlerFunc = (request, cancellationToken) => Task.FromResult(request.CreateResponse(HttpStatusCode.OK));
         }
 
-        public DelegatingHandlerStub(Func<HttpRequestMessage, CancellationToken, Task<HttpResponseMessage>> handlerFunc)
+        public CompanyDelegatingHandlerStub(Func<HttpRequestMessage, CancellationToken, Task<HttpResponseMessage>> handlerFunc)
         {
             _handlerFunc = handlerFunc;
         }
