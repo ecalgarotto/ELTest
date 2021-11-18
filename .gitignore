@@ -202,3 +202,5 @@ $RECYCLE.BIN/
 *.msi
 *.msm
 *.msp
+/.vs/Swoop.EL.Company/DesignTimeBuild
+/.vs/Swoop.EL.Company/v16/TestStore/0
