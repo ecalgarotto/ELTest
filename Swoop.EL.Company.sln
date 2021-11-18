@@ -1,0 +1,61 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31729.503
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Swoop.EL.Company.UI", "Swoop.EL.Company\Swoop.EL.Company.UI.csproj", "{4544B845-90EC-470C-9F00-B9FBC277F434}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Swoop.EL.Company.DAL", "Swoop.EL.Company.Services\Swoop.EL.Company.DAL.csproj", "{934A171D-6057-42B1-9172-71265AFCB008}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Swoop.EL.Company.BAL", "Swoop.EL.Company.BAL\Swoop.EL.Company.BAL.csproj", "{7380005B-D550-4EB4-8282-5C60C0F4CB8B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{A22DA6F5-F88E-4EFF-A0BB-D620ACBB14E2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Swoop.EL.Company.DAL.Tests", "Swoop.EL.Company.DAL.Tests\Swoop.EL.Company.DAL.Tests.csproj", "{439765E3-C837-48DB-8441-61B95526F69E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Swoop.EL.Company.BAL.Tests", "Swoop.EL.Company.BAL.Tests\Swoop.EL.Company.BAL.Tests.csproj", "{9681F71D-96DF-4EE7-AD73-75153B5AF778}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Swoop.EL.Company.Common", "Swoop.EL.Company.Common\Swoop.EL.Company.Common.csproj", "{03BE1350-AF39-4FDF-A0BB-854D17C5E758}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4544B845-90EC-470C-9F00-B9FBC277F434}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4544B845-90EC-470C-9F00-B9FBC277F434}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4544B845-90EC-470C-9F00-B9FBC277F434}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4544B845-90EC-470C-9F00-B9FBC277F434}.Release|Any CPU.Build.0 = Release|Any CPU
+		{934A171D-6057-42B1-9172-71265AFCB008}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{934A171D-6057-42B1-9172-71265AFCB008}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{934A171D-6057-42B1-9172-71265AFCB008}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{934A171D-6057-42B1-9172-71265AFCB008}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7380005B-D550-4EB4-8282-5C60C0F4CB8B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7380005B-D550-4EB4-8282-5C60C0F4CB8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7380005B-D550-4EB4-8282-5C60C0F4CB8B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7380005B-D550-4EB4-8282-5C60C0F4CB8B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{439765E3-C837-48DB-8441-61B95526F69E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{439765E3-C837-48DB-8441-61B95526F69E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{439765E3-C837-48DB-8441-61B95526F69E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{439765E3-C837-48DB-8441-61B95526F69E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9681F71D-96DF-4EE7-AD73-75153B5AF778}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9681F71D-96DF-4EE7-AD73-75153B5AF778}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9681F71D-96DF-4EE7-AD73-75153B5AF778}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9681F71D-96DF-4EE7-AD73-75153B5AF778}.Release|Any CPU.Build.0 = Release|Any CPU
+		{03BE1350-AF39-4FDF-A0BB-854D17C5E758}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{03BE1350-AF39-4FDF-A0BB-854D17C5E758}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{03BE1350-AF39-4FDF-A0BB-854D17C5E758}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{03BE1350-AF39-4FDF-A0BB-854D17C5E758}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{439765E3-C837-48DB-8441-61B95526F69E} = {A22DA6F5-F88E-4EFF-A0BB-D620ACBB14E2}
+		{9681F71D-96DF-4EE7-AD73-75153B5AF778} = {A22DA6F5-F88E-4EFF-A0BB-D620ACBB14E2}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2DE12CDC-3DB0-426C-ACA1-C84F98702E2B}
+	EndGlobalSection
+EndGlobal
