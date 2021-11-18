@@ -1,8 +1,10 @@
 using Moq;
 using Swoop.EL.Company.Common;
+using Swoop.EL.Company.DAL.DTO;
 using Swoop.EL.Company.DAL.Interfaces;
 using Swoop.EL.Company.DAL.Repositories;
 using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
@@ -28,6 +30,16 @@ namespace Swoop.EL.Company.DAL.Tests
             IHttpClientFactory factory = mockHttpClientFactory.Object;
             Mock<IOfficerRepository> mockOfficerRepository = new Mock<IOfficerRepository>();
 
+            List<Officer> officers = new List<Officer>()
+            {
+                new Officer(){ name= "Everton", date_of_birth = new DOB(){ month = 2, year = 1986 }, officer_role ="Manager" },
+                new Officer(){ name= "Karry", date_of_birth = new DOB(){ month = 11, year = 1976 }, officer_role ="Director" }
+            };
+
+
+            mockOfficerRepository.Setup(o => o.SearchOfficers(It.IsAny<string>(), It.IsAny<int>(), null, null))
+                .Returns(Task.FromResult(officers));
+
             mockCompanyRepository = new Mock<CompanyRepository>(factory, new CustomAppSettings()
             {
                 ApiURL = "https://api.company-information.service.gov.uk",
@@ -50,7 +62,7 @@ namespace Swoop.EL.Company.DAL.Tests
 
             Assert.NotNull(companies);
             Assert.NotEmpty(companies);
-            Assert.Equal(5, companies.Count);
+            Assert.Equal(1, companies.Count);
         }
 
         [Fact]
@@ -80,10 +92,10 @@ namespace Swoop.EL.Company.DAL.Tests
         [Fact]
         public async void SearchCompany()
         {
-            var company = await companyRepository.SearchCompany("SWOOP FINANCE LIMITED", "BURKE, Ciaran Gerard");
+            var company = await companyRepository.SearchCompany("SWOOP LIMITED", "BURKE, Ciaran Gerard");
 
             Assert.NotNull(company);
-            Assert.Equal("SWOOP FINANCE LIMITED", company.company_name);
+            Assert.Equal("SWOOP LIMITED", company.company_name);
         }
     }
 
@@ -208,6 +220,61 @@ namespace Swoop.EL.Company.DAL.Tests
                 };
                 return func(request, cancellationToken);
             }
+            else if (request.RequestUri.AbsolutePath == "/search/companies" && request.RequestUri.Query == "?q=SWOOP%20FINANCE%20LIMITED&items_per_page=5")
+            {
+                Func<HttpRequestMessage, CancellationToken, Task<HttpResponseMessage>> func = (request, cancellationToken) => {
+
+                    var response = request.CreateResponse(HttpStatusCode.OK);
+
+                    response.Content = new StringContent(@"{
+    ""total_results"": 44,
+    ""items_per_page"": 5,
+    ""start_index"": 0,
+    ""kind"": ""search#companies"",
+    ""items"": [
+        {
+                    ""date_of_creation"": ""2020-06-30"",
+            ""links"": {
+                        ""self"": ""/company/12704979""
+            },
+            ""company_status"": ""active"",
+            ""company_type"": ""ltd"",
+            ""address_snippet"": ""2 Hilliards Court, Chester Business Park, Chester, Cheshire, United Kingdom, CH4 9PX"",
+            ""title"": ""SWOOP FINANCE LIMITED"",
+            ""address"": {
+                        ""address_line_2"": ""Chester Business Park"",
+                ""premises"": ""2"",
+                ""country"": ""United Kingdom"",
+                ""locality"": ""Chester"",
+                ""region"": ""Cheshire"",
+                ""postal_code"": ""CH4 9PX"",
+                ""address_line_1"": ""Hilliards Court""
+            },
+            ""kind"": ""searchresults#company"",
+            ""snippet"": """",
+            ""description_identifier"": [
+                ""incorporated-on""
+            ],
+            ""matches"": {
+                        ""snippet"": [],
+                ""title"": [
+                    1,
+                    5
+                ]
+            },
+            ""description"": ""12704979 - Incorporated on 30 June 2020"",
+            ""company_number"": ""12704979""
+        }
+    ],
+    ""page_number"": 1
+}");
+
+                    return Task.FromResult(response);
+
+                };
+                return func(request, cancellationToken);
+            }
+
             else
             {
                 Func<HttpRequestMessage, CancellationToken, Task<HttpResponseMessage>> func = (request, cancellationToken) => {
@@ -354,7 +421,7 @@ namespace Swoop.EL.Company.DAL.Tests
             ""company_status"": ""active"",
             ""company_type"": ""ltd"",
             ""address_snippet"": ""2 Hilliards Court, Chester Business Park, Chester, Cheshire, United Kingdom, CH4 9PX"",
-            ""title"": ""SWOOP CREATIVE LIMITED"",
+            ""title"": ""EVERTON CREATIVE LIMITED"",
             ""address"": {
                         ""address_line_2"": ""Chester Business Park"",
                 ""premises"": ""2"",

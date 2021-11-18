@@ -26,59 +26,55 @@ namespace Swoop.EL.Company.DAL.Repositories
 
         public async Task<List<DTO.Company>> GetCompaniesByName(string companyName)
         {
-            using (var client = httpClientFactory.CreateClient())
+            using var client = httpClientFactory.CreateClient();
+
+            client.DefaultRequestHeaders.Add("Authorization", $"Basic {Convert.ToBase64String(Encoding.ASCII.GetBytes(customAppSettings.ApiKey))}");
+
+            var result = await client.GetAsync($"{customAppSettings.ApiURL}/search/companies?q={companyName}&items_per_page={customAppSettings.NumberOfRecords}");
+
+            if (!result.IsSuccessStatusCode)
             {
-
-                client.DefaultRequestHeaders.Add("Authorization", $"Basic {Convert.ToBase64String(Encoding.ASCII.GetBytes(customAppSettings.ApiKey))}");
-
-                var result = await client.GetAsync($"{customAppSettings.ApiURL}/search/companies?q={companyName}&items_per_page={customAppSettings.NumberOfRecords}");
-
-                if (!result.IsSuccessStatusCode)
-                {
-                    //TODO: log error
-                    throw new Exception("Error retrieving Companies by Name (CompanyRepository.GetCompanyByName)");
-                }
-
-                string content = await result.Content.ReadAsStringAsync();
-                var companiesSearch = JsonConvert.DeserializeObject<SearchCompanyResult>(content).items;
-
-                List<DTO.Company> companies = new List<DTO.Company>();
-                //TODO: add AutoMapper or similar
-                foreach (var item in companiesSearch)
-                {
-                    companies.Add(new DTO.Company()
-                    {
-                        company_name = item.title,
-                        company_number = item.company_number,
-                        date_of_creation = item.date_of_creation,
-                        registered_office_address = item.address
-                    });
-                }
-
-                return companies;
+                //TODO: log error
+                throw new Exception("Error retrieving Companies by Name (CompanyRepository.GetCompanyByName)");
             }
+
+            string content = await result.Content.ReadAsStringAsync();
+            var companiesSearch = JsonConvert.DeserializeObject<SearchCompanyResult>(content).items;
+
+            List<DTO.Company> companies = new List<DTO.Company>();
+            //TODO: add AutoMapper or similar
+            foreach (var item in companiesSearch)
+            {
+                companies.Add(new DTO.Company()
+                {
+                    company_name = item.title,
+                    company_number = item.company_number,
+                    date_of_creation = item.date_of_creation,
+                    registered_office_address = item.address
+                });
+            }
+
+            return companies;
         }
 
         public async Task<DTO.Company> GetCompanyByNumber(string companyNumber)
         {
-            using (var client = httpClientFactory.CreateClient())
+            using var client = httpClientFactory.CreateClient();
+
+            client.DefaultRequestHeaders.Add("Authorization", $"Basic {Convert.ToBase64String(Encoding.ASCII.GetBytes(customAppSettings.ApiKey))}");
+
+            var result = await client.GetAsync($"{customAppSettings.ApiURL}/company/{companyNumber}");
+
+            if (!result.IsSuccessStatusCode)
             {
-
-                client.DefaultRequestHeaders.Add("Authorization", $"Basic {Convert.ToBase64String(Encoding.ASCII.GetBytes(customAppSettings.ApiKey))}");
-
-                var result = await client.GetAsync($"{customAppSettings.ApiURL}/company/{companyNumber}");
-
-                if (!result.IsSuccessStatusCode)
-                {
-                    //TODO: log error
-                    throw new Exception("Error retrieving Company by Number (CompanyRepository.GetCompanyByNumber)");
-                }
-
-                string content = await result.Content.ReadAsStringAsync();
-                var company = JsonConvert.DeserializeObject<DTO.Company>(content);
-
-                return company;
+                //TODO: log error
+                throw new Exception("Error retrieving Company by Number (CompanyRepository.GetCompanyByNumber)");
             }
+
+            string content = await result.Content.ReadAsStringAsync();
+            var company = JsonConvert.DeserializeObject<DTO.Company>(content);
+
+            return company;
         }
 
         public async Task<DTO.Company> SearchCompany(string companyName, string officerName)
