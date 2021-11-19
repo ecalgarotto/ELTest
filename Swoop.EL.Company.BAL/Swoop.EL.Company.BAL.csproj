@@ -5,8 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Interfaces\" />
-    <Folder Include="Services\" />
+    <ProjectReference Include="..\Swoop.EL.Company.Services\Swoop.EL.Company.DAL.csproj" />
   </ItemGroup>
 
 </Project>

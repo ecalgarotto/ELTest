@@ -34,8 +34,7 @@ namespace Swoop.EL.Company.DAL.Tests
                 new Officer(){ name= "Karry", date_of_birth = new DOB(){ month = 11, year = 1976 }, officer_role ="Director" }
             };
 
-
-            mockOfficerRepository.Setup(o => o.SearchOfficers(It.IsAny<string>(), It.IsAny<int>(), null, null))
+            mockOfficerRepository.Setup(o => o.SearchOfficers(It.IsAny<string>(), null, null))
                 .Returns(Task.FromResult(officers));
 
             mockCompanyRepository = new Mock<CompanyRepository>(factory, new CustomAppSettings()
@@ -79,7 +78,9 @@ namespace Swoop.EL.Company.DAL.Tests
         [Fact]
         public async void GetCompanyByNumber_NULL()
         {
-            await Assert.ThrowsAsync<Exception>(() => companyRepository.GetCompanyByNumber("123"));
+            var response = companyRepository.GetCompanyByNumber("123");
+
+            Assert.Null(response);
         }
 
         [Fact]

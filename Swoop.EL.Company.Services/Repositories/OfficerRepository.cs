@@ -22,7 +22,7 @@ namespace Swoop.EL.Company.DAL.Repositories
             this.customAppSettings = customAppSettings;
         }
 
-        public async Task<List<Officer>> SearchOfficers(string companyNumber, int numberOfItems, bool? status = null, int? age = null)
+        public async Task<List<Officer>> SearchOfficers(string companyNumber, bool? status = null, int? age = null)
         {
             if (string.IsNullOrEmpty(companyNumber))
                 throw new ArgumentException("CompanyNumber is mandatory to retrieve Officers");
@@ -31,12 +31,12 @@ namespace Swoop.EL.Company.DAL.Repositories
 
             client.DefaultRequestHeaders.Add("Authorization", $"Basic {Convert.ToBase64String(Encoding.ASCII.GetBytes(customAppSettings.ApiKey))}");
 
-            var result = await client.GetAsync($"{customAppSettings.ApiURL}/company/{companyNumber}/officers&items_per_page={customAppSettings.NumberOfRecords}");
+            var result = await client.GetAsync($"{customAppSettings.ApiURL}/company/{companyNumber}/officers?items_per_page={customAppSettings.NumberOfRecords}");
 
             if (!result.IsSuccessStatusCode)
             {
                 //TODO: log error
-                throw new Exception("Error retrieving Officers from a Company (OfficersRepository.SearchOfficers)");
+                return null;
             }
 
             string content = await result.Content.ReadAsStringAsync();

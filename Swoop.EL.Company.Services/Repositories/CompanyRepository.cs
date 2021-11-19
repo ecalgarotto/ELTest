@@ -35,7 +35,7 @@ namespace Swoop.EL.Company.DAL.Repositories
             if (!result.IsSuccessStatusCode)
             {
                 //TODO: log error
-                throw new Exception("Error retrieving Companies by Name (CompanyRepository.GetCompanyByName)");
+                return null;
             }
 
             string content = await result.Content.ReadAsStringAsync();
@@ -68,7 +68,7 @@ namespace Swoop.EL.Company.DAL.Repositories
             if (!result.IsSuccessStatusCode)
             {
                 //TODO: log error
-                throw new Exception("Error retrieving Company by Number (CompanyRepository.GetCompanyByNumber)");
+                return null;
             }
 
             string content = await result.Content.ReadAsStringAsync();
@@ -85,9 +85,11 @@ namespace Swoop.EL.Company.DAL.Repositories
             {
                 foreach (var company in companies)
                 {
-                    var officers = await officerRepository.SearchOfficers(company.company_number, customAppSettings.NumberOfRecords);
+                    var officers = await officerRepository.SearchOfficers(company.company_number);
+
                     if (officers != null && officers.Count > 0)
-                        return company;
+                        if (officers.Any(o => o.name.Contains(officerName)))
+                            return company;
                 }
             }
             //else

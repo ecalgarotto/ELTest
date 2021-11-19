@@ -41,7 +41,7 @@ namespace Swoop.EL.Company.DAL.Tests
         [Fact]
         public async void SearchOfficers_OK()
         {
-            var officers = await officerRepository.SearchOfficers("04362570", 5);
+            var officers = await officerRepository.SearchOfficers("04362570");
 
             Assert.NotNull(officers);
             Assert.NotEmpty(officers);
@@ -51,13 +51,15 @@ namespace Swoop.EL.Company.DAL.Tests
         [Fact]
         public async void SearchOfficers_NULL()
         {
-            await Assert.ThrowsAsync<ArgumentException>(() => officerRepository.SearchOfficers(null, 5));
+            await Assert.ThrowsAsync<ArgumentException>(() => officerRepository.SearchOfficers(null));
         }
 
         [Fact]
         public async void SearchOfficers_InvalidCompany()
         {
-            await Assert.ThrowsAsync<Exception>(() => officerRepository.SearchOfficers("123", 5));
+            var response = await officerRepository.SearchOfficers("123");
+
+            Assert.Null(response);
         }
     }
 

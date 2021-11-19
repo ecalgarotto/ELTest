@@ -6,7 +6,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Swoop.EL.Company.BAL.Interfaces;
+using Swoop.EL.Company.BAL.Services;
 using Swoop.EL.Company.Common;
+using Swoop.EL.Company.DAL.Interfaces;
+using Swoop.EL.Company.DAL.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,9 +33,21 @@ namespace Swoop.EL.Company
 
             services.AddTransient<ICustomAppSettings>(p =>
             {
-                var section = Configuration.GetSection("CustomAppSettings");
-                return (CustomAppSettings)section;
+                CustomAppSettings settings = new CustomAppSettings();
+                Configuration.GetSection("CustomAppSettings").Bind(settings);                
+                return settings;
             });
+
+            services.AddSwaggerGen();
+
+            services.AddHttpContextAccessor();
+            services.AddHttpClient();
+
+            services.AddScoped<ICompanyService, CompanyService>();
+            services.AddScoped<IOfficerService, OfficerService>();
+
+            services.AddScoped<ICompanyRepository, CompanyRepository>();
+            services.AddScoped<IOfficerRepository, OfficerRepository>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -39,6 +55,12 @@ namespace Swoop.EL.Company
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseSwagger();
+                app.UseSwaggerUI(options =>
+                {
+                    options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+                    options.RoutePrefix = string.Empty;
+                });
             }
 
             app.UseHttpsRedirection();
