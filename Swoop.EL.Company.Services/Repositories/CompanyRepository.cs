@@ -26,6 +26,9 @@ namespace Swoop.EL.Company.DAL.Repositories
 
         public async Task<List<DTO.Company>> GetCompaniesByName(string companyName)
         {
+            if (string.IsNullOrEmpty(companyName))
+                throw new ArgumentException("CompanyName is mandatory.");
+
             using var client = httpClientFactory.CreateClient();
 
             client.DefaultRequestHeaders.Add("Authorization", $"Basic {Convert.ToBase64String(Encoding.ASCII.GetBytes(customAppSettings.ApiKey))}");
@@ -59,6 +62,9 @@ namespace Swoop.EL.Company.DAL.Repositories
 
         public async Task<DTO.Company> GetCompanyByNumber(string companyNumber)
         {
+            if (string.IsNullOrEmpty(companyNumber))
+                throw new ArgumentException("CompanyNumber is mandatory.");
+
             using var client = httpClientFactory.CreateClient();
 
             client.DefaultRequestHeaders.Add("Authorization", $"Basic {Convert.ToBase64String(Encoding.ASCII.GetBytes(customAppSettings.ApiKey))}");
@@ -79,6 +85,13 @@ namespace Swoop.EL.Company.DAL.Repositories
 
         public async Task<DTO.Company> SearchCompany(string companyName, string officerName)
         {
+            if (string.IsNullOrEmpty(companyName))
+                throw new ArgumentException("CompanyName is mandatory.");
+
+            if (string.IsNullOrEmpty(companyName))
+                throw new ArgumentException("OfficerName is mandatory.");
+
+
             var companies = await this.GetCompaniesByName(companyName);
 
             if (companies.Count > 0)

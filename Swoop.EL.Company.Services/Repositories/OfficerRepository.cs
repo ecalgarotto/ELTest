@@ -25,7 +25,7 @@ namespace Swoop.EL.Company.DAL.Repositories
         public async Task<List<Officer>> SearchOfficers(string companyNumber, bool? status = null, int? age = null)
         {
             if (string.IsNullOrEmpty(companyNumber))
-                throw new ArgumentException("CompanyNumber is mandatory to retrieve Officers");
+                throw new ArgumentException("CompanyNumber is mandatory.");
 
             using var client = httpClientFactory.CreateClient();
 

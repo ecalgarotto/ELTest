@@ -60,10 +60,7 @@ namespace Swoop.EL.Company.DAL.Tests
         [Fact]
         public async void GetCompaniesByName_NULL()
         {
-            var companies = await companyRepository.GetCompaniesByName("");
-
-            Assert.NotNull(companies);
-            Assert.Empty(companies);
+            await Assert.ThrowsAsync<ArgumentException>(() => companyRepository.GetCompaniesByName(null));
         }
 
         [Fact]
@@ -78,7 +75,7 @@ namespace Swoop.EL.Company.DAL.Tests
         [Fact]
         public async void GetCompanyByNumber_NULL()
         {
-            var response = companyRepository.GetCompanyByNumber("123");
+            var response = await companyRepository.GetCompanyByNumber("123");
 
             Assert.Null(response);
         }
@@ -86,7 +83,7 @@ namespace Swoop.EL.Company.DAL.Tests
         [Fact]
         public async void SearchCompany()
         {
-            var company = await companyRepository.SearchCompany("SWOOP LIMITED", "BURKE, Ciaran Gerard");
+            var company = await companyRepository.SearchCompany("SWOOP LIMITED", "Everton");
 
             Assert.NotNull(company);
             Assert.Equal("SWOOP LIMITED", company.company_name);

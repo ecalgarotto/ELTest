@@ -78,7 +78,7 @@ namespace Swoop.EL.Company.DAL.Tests
 
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            if (request.RequestUri.AbsolutePath == "/company/04362570/officers&items_per_page=5")
+            if (request.RequestUri.AbsolutePath == "/company/04362570/officers")
             {
                 Func<HttpRequestMessage, CancellationToken, Task<HttpResponseMessage>> func = (request, cancellationToken) =>
                 {

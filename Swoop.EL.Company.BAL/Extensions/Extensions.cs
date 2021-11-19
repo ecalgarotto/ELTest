@@ -11,18 +11,17 @@ namespace Swoop.EL.Company.BAL.Extensions
             if (company == null)
                 return null;
 
-            //TODO: use AutoMapper or similar (maybe extension)
             return new DTO.Company()
             {
                 Name = company.company_name,
                 Address = new DTO.Address()
                 {
-                    Region = company.registered_office_address.region,
-                    PostalCode = company.registered_office_address.postal_code,
-                    Locality = company.registered_office_address.locality,
-                    Country = company.registered_office_address.country,
-                    AddressLine1 = company.registered_office_address.address_line_1,
-                    AddressLine2 = company.registered_office_address.address_line_2
+                    Region = company.registered_office_address?.region,
+                    PostalCode = company.registered_office_address?.postal_code,
+                    Locality = company.registered_office_address?.locality,
+                    Country = company.registered_office_address?.country,
+                    AddressLine1 = company.registered_office_address?.address_line_1,
+                    AddressLine2 = company.registered_office_address?.address_line_2
                 },
                 CompanyAge = company.age,
                 RegistrationNumber = company.company_number
@@ -34,7 +33,6 @@ namespace Swoop.EL.Company.BAL.Extensions
             if (officer == null)
                 return null;
 
-            //TODO: use AutoMapper or similar (maybe extension)
             return new DTO.Officer()
             {
                 Name = officer.name,
