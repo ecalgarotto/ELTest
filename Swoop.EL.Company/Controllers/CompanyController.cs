@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Swoop.EL.Company.BAL;
 using Swoop.EL.Company.BAL.Interfaces;
+using Swoop.EL.Company.Common.Cache;
 
 namespace Swoop.EL.Company.Controllers
 {
@@ -15,11 +16,13 @@ namespace Swoop.EL.Company.Controllers
     {
         private readonly ILogger<CompanyController> _logger;
         private readonly ICompanyService companyService;
+        private readonly ICacheProvider cacheProvider;
 
-        public CompanyController(ILogger<CompanyController> logger, ICompanyService companyService)
+        public CompanyController(ILogger<CompanyController> logger, ICompanyService companyService, ICacheProvider cacheProvider)
         {
             _logger = logger;
             this.companyService = companyService;
+            this.cacheProvider = cacheProvider;
         }
 
         [HttpGet("GetCompanyByNumber")]

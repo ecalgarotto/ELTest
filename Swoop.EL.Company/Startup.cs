@@ -9,11 +9,13 @@ using Microsoft.Extensions.Logging;
 using Swoop.EL.Company.BAL.Interfaces;
 using Swoop.EL.Company.BAL.Services;
 using Swoop.EL.Company.Common;
+using Swoop.EL.Company.Common.Cache;
 using Swoop.EL.Company.DAL.Interfaces;
 using Swoop.EL.Company.DAL.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace Swoop.EL.Company
@@ -31,12 +33,40 @@ namespace Swoop.EL.Company
         {
             services.AddControllers();
 
+            services.AddTransient<ICacheProvider>(p =>
+            {
+                CacheAppSettings settings = new CacheAppSettings();
+                Configuration.GetSection("CacheAppSettings").Bind(settings);
+
+                Assembly assembly = Assembly.Load(settings.CacheProvider);
+
+                Type assemblyType = assembly.GetType(settings.Provider);
+                if (assemblyType != null)
+                {
+                    Type[] argTypes = new Type[] { };
+
+                    ConstructorInfo cInfo = assemblyType.GetConstructor(argTypes);
+
+                    ICacheProvider cacheProvider = (ICacheProvider)cInfo.Invoke(null);
+
+                    return cacheProvider;
+                }
+                else
+                {
+                    // Error checking is needed to help catch instances where
+                    throw new NotImplementedException();
+                }
+
+            });
+
             services.AddTransient<ICustomAppSettings>(p =>
             {
                 CustomAppSettings settings = new CustomAppSettings();
                 Configuration.GetSection("CustomAppSettings").Bind(settings);                
                 return settings;
             });
+
+            
 
             services.AddSwaggerGen();
 

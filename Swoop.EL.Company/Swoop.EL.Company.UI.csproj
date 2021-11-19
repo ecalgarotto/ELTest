@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\RedisCacheProvider\RedisCacheProvider.csproj" />
     <ProjectReference Include="..\Swoop.EL.Company.BAL\Swoop.EL.Company.BAL.csproj" />
     <ProjectReference Include="..\Swoop.EL.Company.Common\Swoop.EL.Company.Common.csproj" />
   </ItemGroup>
