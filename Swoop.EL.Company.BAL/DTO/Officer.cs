@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
 namespace Swoop.EL.Company.BAL.DTO
 {
+    [ExcludeFromCodeCoverage]
     public class Officer
     {
         public string Name { get; set; }

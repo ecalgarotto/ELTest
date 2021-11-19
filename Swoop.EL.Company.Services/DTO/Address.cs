@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
 namespace Swoop.EL.Company.DAL.DTO
 {
+    [ExcludeFromCodeCoverage]
     public class Address
     {
         public string postal_code { get; set; }

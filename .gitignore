@@ -204,3 +204,4 @@ $RECYCLE.BIN/
 *.msp
 /.vs/Swoop.EL.Company/DesignTimeBuild
 /.vs/Swoop.EL.Company/v16/TestStore/0
+/Swoop.EL.Company/appsettings.Development.json
