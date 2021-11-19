@@ -22,9 +22,14 @@ namespace Swoop.EL.Company.Controllers
         }
 
         [HttpGet("SearchOfficers")]
-        public Task<List<BAL.DTO.Officer>> SearchOfficers(string companyNumber, bool? status = null, int? age = null)
+        public async Task<ActionResult<List<BAL.DTO.Officer>>> SearchOfficers(string companyNumber, bool? status = null, int? age = null)
         {
-            return officerService.SearchOfficers(companyNumber, status, age);
+            var response = await officerService.SearchOfficers(companyNumber, status, age);
+
+            if (response == null)
+                return NotFound("Officers not found with this search criteria.");
+
+            return Ok(response);
         }
     }
 }

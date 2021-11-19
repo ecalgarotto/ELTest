@@ -23,21 +23,36 @@ namespace Swoop.EL.Company.Controllers
         }
 
         [HttpGet("GetCompanyByNumber")]
-        public Task<BAL.DTO.Company> GetCompanyByNumber(string companyNumber)
+        public async Task<ActionResult<BAL.DTO.Company>> GetCompanyByNumber(string companyNumber)
         {
-            return companyService.GetCompanyByNumber(companyNumber);
+            var response = await companyService.GetCompanyByNumber(companyNumber);
+
+            if (response == null)
+                return NotFound("Company not found with this search criteria");
+
+            return Ok(response);
         }
 
         [HttpGet("GetCompaniesByName")]
-        public Task<List<BAL.DTO.Company>> GetCompaniesByName(string companyName)
+        [Produces(typeof(List<BAL.DTO.Company>))]
+        public async Task<IActionResult> GetCompaniesByName(string companyName)
         {
-            return companyService.GetCompaniesByName(companyName);
+            var response = await companyService.GetCompaniesByName(companyName);
+            if (response == null)
+                return NotFound("Companies not found with this search criteria");
+
+            return Ok(response);
         }
 
         [HttpGet("SearchCompany")]
-        public Task<BAL.DTO.Company> SearchCompany(string companyName, string officerName)
+        public async Task<ActionResult<BAL.DTO.Company>> SearchCompany(string companyName, string officerName)
         {
-            return companyService.SearchCompany(companyName, officerName);
+            var response = await companyService.SearchCompany(companyName, officerName);
+
+            if (response == null)
+                return NotFound("Company not found with this search criteria");
+
+            return Ok(response);
         }
     }
 }

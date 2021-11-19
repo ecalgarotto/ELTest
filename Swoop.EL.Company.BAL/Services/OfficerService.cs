@@ -21,12 +21,20 @@ namespace Swoop.EL.Company.BAL.Services
 
         public async Task<List<Officer>> SearchOfficers(string companyNumber, bool? status = null, int? age = null)
         {
-            var officers = await officerRepository.SearchOfficers(companyNumber, status, age);
+            try
+            {
+                var officers = await officerRepository.SearchOfficers(companyNumber, status, age);
 
-            if (officers == null || officers.Count == 0)
-                return null;
+                if (officers == null || officers.Count == 0)
+                    return null;
 
-            return officers.Select(o => o.Parse()).ToList();
+                return officers.Select(o => o.Parse()).ToList();
+            }
+            catch (Exception ex)
+            {
+                //log error
+                throw ex;
+            }
         }
     }
 }
