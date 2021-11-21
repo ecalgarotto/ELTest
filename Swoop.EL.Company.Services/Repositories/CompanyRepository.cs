@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using Swoop.EL.Company.Common;
 using Swoop.EL.Company.DAL.DTO;
 using Swoop.EL.Company.DAL.Interfaces;
@@ -13,15 +14,17 @@ namespace Swoop.EL.Company.DAL.Repositories
 {
     public class CompanyRepository : ICompanyRepository
     {
-        IHttpClientFactory httpClientFactory;
-        ICustomAppSettings customAppSettings;
-        IOfficerRepository officerRepository;
+        private readonly IHttpClientFactory httpClientFactory;
+        private readonly ICustomAppSettings customAppSettings;
+        private readonly IOfficerRepository officerRepository;
+        private readonly ILogger<CompanyRepository> logger;
 
-        public CompanyRepository(IHttpClientFactory httpClientFactory, ICustomAppSettings customAppSettings, IOfficerRepository officerRepository)
+        public CompanyRepository(IHttpClientFactory httpClientFactory, ICustomAppSettings customAppSettings, IOfficerRepository officerRepository, ILogger<CompanyRepository> logger)
         {
             this.httpClientFactory = httpClientFactory;
             this.customAppSettings = customAppSettings;
             this.officerRepository = officerRepository;
+            this.logger = logger;
         }
 
         public async Task<List<DTO.Company>> GetCompaniesByName(string companyName)
@@ -37,24 +40,25 @@ namespace Swoop.EL.Company.DAL.Repositories
 
             if (!result.IsSuccessStatusCode)
             {
-                //TODO: log error
+                logger.LogError("Request to Companies House API failed. Method: CompanyRepository.GetCompaniesByName Details: {details}", result.ReasonPhrase);
                 return null;
             }
 
             string content = await result.Content.ReadAsStringAsync();
-            var companiesSearch = JsonConvert.DeserializeObject<SearchCompanyResult>(content).items;
+            var companiesSearch = JsonConvert.DeserializeObject<SearchCompanyResult>(content).Items;
 
             List<DTO.Company> companies = new List<DTO.Company>();
-            //TODO: add AutoMapper or similar
             foreach (var item in companiesSearch)
             {
-                companies.Add(new DTO.Company()
-                {
-                    company_name = item.title,
-                    company_number = item.company_number,
-                    date_of_creation = item.date_of_creation,
-                    registered_office_address = item.address
-                });
+                companies.Add(
+                    new DTO.Company()
+                    {
+                        Company_name = item.Title,
+                        Company_number = item.Company_number,
+                        Date_of_creation = item.Date_of_creation,
+                        Registered_office_address = item.Address
+                    }
+                );
             }
 
             return companies;
@@ -73,7 +77,7 @@ namespace Swoop.EL.Company.DAL.Repositories
 
             if (!result.IsSuccessStatusCode)
             {
-                //TODO: log error
+                logger.LogError("Request to Companies House API failed. Method: CompanyRepository.GetCompanyByNumber Details: {details}", result.ReasonPhrase);
                 return null;
             }
 
@@ -98,17 +102,17 @@ namespace Swoop.EL.Company.DAL.Repositories
             {
                 foreach (var company in companies)
                 {
-                    var officers = await officerRepository.SearchOfficers(company.company_number);
+                    var officers = await officerRepository.SearchOfficers(company.Company_number);
 
                     if (officers != null && officers.Count > 0)
-                        if (officers.Any(o => o.name.Contains(officerName)))
+                        if (officers.Any(o => o.Name.Contains(officerName)))
                             return company;
                 }
             }
-            //else
-            //TODO: no company found with the search criteria
-
-            //TODO: log that no company was found with this search criteria
+            else
+            {
+                logger.LogError("No Company found with current search criteria. Method: CompanyRepository.SearchCompany. Parameters: company name: {companyName}, officer name: {officerName}", companyName, officerName);
+            }
             return null;
         }
     }

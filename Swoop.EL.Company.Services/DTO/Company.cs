@@ -8,16 +8,16 @@ namespace Swoop.EL.Company.DAL.DTO
     [ExcludeFromCodeCoverage]
     public class Company
     {
-        public string company_name { get; set; }
-        public string company_number { get; set; }
-        public DateTime date_of_creation { get; set; }
-        public int age
+        public string Company_name { get; set; }
+        public string Company_number { get; set; }
+        public DateTime Date_of_creation { get; set; }
+        public int Age
         {
             get
             {
-                return (DateTime.Now - date_of_creation).Days / 365;
+                return (DateTime.Now - Date_of_creation).Days / 365;
             }
         }
-        public Address registered_office_address { get; set; }
+        public Address Registered_office_address { get; set; }
     }
 }

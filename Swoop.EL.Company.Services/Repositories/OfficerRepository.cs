@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using Swoop.EL.Company.Common;
 using Swoop.EL.Company.DAL.DTO;
 using Swoop.EL.Company.DAL.Interfaces;
@@ -13,13 +14,15 @@ namespace Swoop.EL.Company.DAL.Repositories
 {
     public class OfficerRepository : IOfficerRepository
     {
-        IHttpClientFactory httpClientFactory;
-        ICustomAppSettings customAppSettings;
+        private readonly IHttpClientFactory httpClientFactory;
+        private readonly ICustomAppSettings customAppSettings;
+        private readonly ILogger<OfficerRepository> logger;
 
-        public OfficerRepository(IHttpClientFactory httpClientFactory, ICustomAppSettings customAppSettings)
+        public OfficerRepository(IHttpClientFactory httpClientFactory, ICustomAppSettings customAppSettings, ILogger<OfficerRepository> logger)
         {
             this.httpClientFactory = httpClientFactory;
             this.customAppSettings = customAppSettings;
+            this.logger = logger;
         }
 
         public async Task<List<Officer>> SearchOfficers(string companyNumber, bool? status = null, int? age = null)
@@ -35,22 +38,22 @@ namespace Swoop.EL.Company.DAL.Repositories
 
             if (!result.IsSuccessStatusCode)
             {
-                //TODO: log error
+                logger.LogError("Request to Companies House API failed. Method: OfficerRepository.SearchOfficers Details: {details}", result.ReasonPhrase);
                 return null;
             }
 
             string content = await result.Content.ReadAsStringAsync();
-            var officersSearch = JsonConvert.DeserializeObject<SearchOfficerResult>(content).items;
+            var officersSearch = JsonConvert.DeserializeObject<SearchOfficerResult>(content).Items;
 
             //there's no filter in the API itself, so that's why we filter in code
             if (status.HasValue)
             {
                 //TODO: don't know how to filter only active ones, didn't find it in the API docs
-                officersSearch = officersSearch.Where(c => c.name != null).ToArray();
+                officersSearch = officersSearch.Where(c => c.Name != null).ToArray();
             }
 
             if (age.HasValue)
-                officersSearch = officersSearch.Where(c => c.age == age).ToArray();
+                officersSearch = officersSearch.Where(c => c.Age == age).ToArray();
 
             return officersSearch.ToList();
         }

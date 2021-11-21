@@ -8,14 +8,14 @@ namespace Swoop.EL.Company.DAL.DTO
     [ExcludeFromCodeCoverage]
     public class Officer
     {
-        public string name { get; set; }
-        public DOB date_of_birth { get; set; }
-        public string officer_role { get; set; }
-        public int age
+        public string Name { get; set; }
+        public DOB Date_of_birth { get; set; }
+        public string Officer_role { get; set; }
+        public int Age
         {
             get
             {
-                return (DateTime.Now - new DateTime(date_of_birth.year, date_of_birth.month, 1)).Days / 365;
+                return (DateTime.Now - new DateTime(Date_of_birth.Year, Date_of_birth.Month, 1)).Days / 365;
             }
         }
     }
@@ -23,7 +23,7 @@ namespace Swoop.EL.Company.DAL.DTO
     [ExcludeFromCodeCoverage]
     public class DOB
     {
-        public int year { get; set; }
-        public int month { get; set; }
+        public int Year { get; set; }
+        public int Month { get; set; }
     }
 }

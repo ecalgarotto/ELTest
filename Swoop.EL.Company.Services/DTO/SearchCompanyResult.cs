@@ -9,8 +9,8 @@ namespace Swoop.EL.Company.DAL.DTO
     [ExcludeFromCodeCoverage]
     public class SearchCompanyResult
     {
-        public int total_results { get; set; }
-        public int items_per_page { get; set; }
-        public CompanySearch[] items { get; set; }
+        public int Total_results { get; set; }
+        public int Items_per_page { get; set; }
+        public CompanySearch[] Items { get; set; }
     }
 }

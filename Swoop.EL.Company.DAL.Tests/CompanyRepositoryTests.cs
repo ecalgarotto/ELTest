@@ -30,8 +30,8 @@ namespace Swoop.EL.Company.DAL.Tests
 
             List<Officer> officers = new List<Officer>()
             {
-                new Officer(){ name= "Everton", date_of_birth = new DOB(){ month = 2, year = 1986 }, officer_role ="Manager" },
-                new Officer(){ name= "Karry", date_of_birth = new DOB(){ month = 11, year = 1976 }, officer_role ="Director" }
+                new Officer(){ Name= "Everton", Date_of_birth = new DOB(){ Month = 2, Year = 1986 }, Officer_role ="Manager" },
+                new Officer(){ Name= "Karry", Date_of_birth = new DOB(){ Month = 11, Year = 1976 }, Officer_role ="Director" }
             };
 
             mockOfficerRepository.Setup(o => o.SearchOfficers(It.IsAny<string>(), null, null))
@@ -69,7 +69,7 @@ namespace Swoop.EL.Company.DAL.Tests
             var company = await companyRepository.GetCompanyByNumber("04362570");
 
             Assert.NotNull(company);
-            Assert.Equal("SWOOP FINANCE LIMITED", company.company_name);
+            Assert.Equal("SWOOP FINANCE LIMITED", company.Company_name);
         }
 
         [Fact]
@@ -86,7 +86,7 @@ namespace Swoop.EL.Company.DAL.Tests
             var company = await companyRepository.SearchCompany("SWOOP LIMITED", "Everton");
 
             Assert.NotNull(company);
-            Assert.Equal("SWOOP LIMITED", company.company_name);
+            Assert.Equal("SWOOP LIMITED", company.Company_name);
         }
     }
 

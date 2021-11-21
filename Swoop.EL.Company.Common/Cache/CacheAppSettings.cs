@@ -9,5 +9,6 @@ namespace Swoop.EL.Company.Common
     {
         public string CacheProvider { get; set; }
         public string Provider { get; set; }
+        public bool Enabled { get; set; }
     }
 }

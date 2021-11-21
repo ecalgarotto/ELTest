@@ -9,13 +9,20 @@ namespace Swoop.EL.Company.BAL.DTO
     public class Officer
     {
         public string Name { get; set; }
-        public DateTime DateOfBirth { get; set; }
+        public DOB DateOfBirth { get; set; }
         public int Age { 
             get
             {
-                return (DateTime.Now - DateOfBirth).Days / 365;
+                return DateOfBirth!= null ? (DateTime.Now - new DateTime(DateOfBirth.Year, DateOfBirth.Month, DateTime.Now.Day)).Days / 365 : 0;
             }
         }
         public string Role { get; set; }
+    }
+
+    [ExcludeFromCodeCoverage]
+    public class DOB
+    {
+        public int Year { get; set; }
+        public int Month { get; set; }
     }
 }

@@ -1,6 +1,8 @@
+using Microsoft.Extensions.Logging;
 using Moq;
 using Swoop.EL.Company.BAL.Interfaces;
 using Swoop.EL.Company.BAL.Services;
+using Swoop.EL.Company.Common.Cache;
 using Swoop.EL.Company.DAL.DTO;
 using Swoop.EL.Company.DAL.Interfaces;
 using System;
@@ -20,9 +22,9 @@ namespace Swoop.EL.Company.BAL.Tests
 
             List<Officer> officers = new List<Officer>()
             {
-                new Officer(){ name = "OFFICER 1", officer_role = "Director", date_of_birth = new DOB(){ month = 1, year = 2021 } },
-                new Officer(){ name = "OFFICER 2", officer_role = "Manager", date_of_birth = new DOB(){ month = 2, year = 2021 } },
-                new Officer(){ name = "ANOTHER OFFICER 1", officer_role = "Curator", date_of_birth = new DOB(){ month = 3, year = 2021 } },
+                new Officer(){ Name = "OFFICER 1", Officer_role = "Director", Date_of_birth = new DOB(){ Month = 1, Year = 2021 } },
+                new Officer(){ Name = "OFFICER 2", Officer_role = "Manager", Date_of_birth = new DOB(){ Month = 2, Year = 2021 } },
+                new Officer(){ Name = "ANOTHER OFFICER 1", Officer_role = "Curator", Date_of_birth = new DOB(){ Month = 3, Year = 2021 } },
             };
 
 
@@ -38,7 +40,7 @@ namespace Swoop.EL.Company.BAL.Tests
             mockOfficerRepository.Setup(o => o.SearchOfficers(null, null, null))
                 .Throws<ArgumentException>();
 
-            officerService = new OfficerService(mockOfficerRepository.Object);
+            officerService = new OfficerService(mockOfficerRepository.Object, new EmptyCache(), new Mock<ILogger<OfficerService>>().Object);
         }
 
         [Theory]

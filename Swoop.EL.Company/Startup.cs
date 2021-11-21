@@ -33,40 +33,67 @@ namespace Swoop.EL.Company
         {
             services.AddControllers();
 
-            services.AddTransient<ICacheProvider>(p =>
+            services.AddLogging();
+
+            services.AddSingleton<ICacheProvider>(p =>
             {
-                CacheAppSettings settings = new CacheAppSettings();
-                Configuration.GetSection("CacheAppSettings").Bind(settings);
-
-                Assembly assembly = Assembly.Load(settings.CacheProvider);
-
-                Type assemblyType = assembly.GetType(settings.Provider);
-                if (assemblyType != null)
+                using var loggerFactory = LoggerFactory.Create(builder =>
                 {
-                    Type[] argTypes = new Type[] { };
+                    builder.SetMinimumLevel(LogLevel.Information);
+                    builder.AddConsole();
+                    builder.AddEventSourceLogger();
+                });
 
-                    ConstructorInfo cInfo = assemblyType.GetConstructor(argTypes);
+                ILogger logger = loggerFactory.CreateLogger<Startup>();
 
-                    ICacheProvider cacheProvider = (ICacheProvider)cInfo.Invoke(null);
-
-                    return cacheProvider;
-                }
-                else
+                try
                 {
-                    // Error checking is needed to help catch instances where
-                    throw new NotImplementedException();
-                }
+                    CacheAppSettings settings = new CacheAppSettings();
+                    Configuration.GetSection("CacheAppSettings").Bind(settings);
 
+                    if (!settings.Enabled)
+                    {
+                        logger.LogInformation("Cache Provider not loaded as it is disabled in settings.");
+                        return new EmptyCache();
+                    }
+
+
+                    Assembly assembly = Assembly.Load(settings.CacheProvider);
+
+                    logger.LogInformation("Cache Provider Assembly loaded: {CacheProvider}", settings.CacheProvider);
+
+                    Type assemblyType = assembly.GetType(settings.Provider);
+                    if (assemblyType != null)
+                    {
+                        Type[] argTypes = new Type[] { typeof(IConfiguration) };
+
+                        ConstructorInfo cInfo = assemblyType.GetConstructor(argTypes);
+
+                        ICacheProvider cacheProvider = (ICacheProvider)cInfo.Invoke(new object?[] { Configuration });
+
+                        return cacheProvider;
+                    }
+                    else
+                    {
+                        logger.LogError("Assembly not found to load Cache Provider: {CacheProvider}", settings.CacheProvider);
+                        throw new NotImplementedException();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    logger.LogError(ex, "Error instantiating Cache Provider based on configs from settings file");
+                }
+                return new EmptyCache();
             });
 
             services.AddTransient<ICustomAppSettings>(p =>
             {
                 CustomAppSettings settings = new CustomAppSettings();
-                Configuration.GetSection("CustomAppSettings").Bind(settings);                
+                Configuration.GetSection("CustomAppSettings").Bind(settings);
                 return settings;
             });
 
-            
+
 
             services.AddSwaggerGen();
 

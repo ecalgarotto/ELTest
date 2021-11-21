@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Swoop.EL.Company.Common
+﻿namespace Swoop.EL.Company.Common
 {
     public class CustomAppSettings: ICustomAppSettings
     {
