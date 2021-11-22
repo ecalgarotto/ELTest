@@ -43,11 +43,11 @@ jobs:
         with:
           files: './Swoop.EL.Company/myapp/appsettings.json'
         env:
-          CustomAppSettings.ApiURL: ${{ secrets.CustomAppSettings_ApiURL }}
-          CustomAppSettings.ApiKey: ${{ secrets.CustomAppSettings_ApiKey }}
-          CacheAppSettings.CacheProvider: ${{ secrets.CustomAppSettings_ApiKey }}
-          CacheAppSettings.Provider: ${{ secrets.CustomAppSettings_ApiKey }}
-          CacheAppSettings.Enabled: ${{ secrets.CustomAppSettings_Enabled }}
+          CustomAppSettings.ApiURL: ${{ secrets.CUSTOMAPPSETTINGS_APIURL }}
+          CustomAppSettings.ApiKey: ${{ secrets.CUSTOMAPPSETTINGS_APIKEY }}
+          CacheAppSettings.CacheProvider: ${{ secrets.CACHEAPPSETTINGS_CACHEPROVIDER }}
+          CacheAppSettings.Provider: ${{ secrets.CACHEAPPSETTINGS_PROVIDER }}
+          CacheAppSettings.Enabled: ${{ secrets.CACHEAPPSETTINGS_ENABLED }}
 
       # Deploy to Azure Web apps
       - name: 'Run Azure webapp deploy action using publish profile credentials'
