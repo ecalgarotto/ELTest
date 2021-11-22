@@ -17,7 +17,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Swoop.EL.Company.BAL.Tests"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Swoop.EL.Company.Common", "Swoop.EL.Company.Common\Swoop.EL.Company.Common.csproj", "{03BE1350-AF39-4FDF-A0BB-854D17C5E758}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RedisCacheProvider", "RedisCacheProvider\RedisCacheProvider.csproj", "{74433631-948C-4EA7-9B60-05E003CABA14}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RedisCacheProvider", "RedisCacheProvider\RedisCacheProvider.csproj", "{74433631-948C-4EA7-9B60-05E003CABA14}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Swoop.EL.CodeTestApiClient", "CodeTestApiClient\Swoop.EL.CodeTestApiClient.csproj", "{AD246D03-C9CE-426A-906E-3EF6FF246C5F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Swoop.EL.CodeTestApiClient.Test", "Swoop.EL.CodeTestApiClient.Test\Swoop.EL.CodeTestApiClient.Test.csproj", "{65BCE920-5DC1-4688-92ED-953DB0EFEDAF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,6 +57,14 @@ Global
 		{74433631-948C-4EA7-9B60-05E003CABA14}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{74433631-948C-4EA7-9B60-05E003CABA14}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{74433631-948C-4EA7-9B60-05E003CABA14}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD246D03-C9CE-426A-906E-3EF6FF246C5F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD246D03-C9CE-426A-906E-3EF6FF246C5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD246D03-C9CE-426A-906E-3EF6FF246C5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD246D03-C9CE-426A-906E-3EF6FF246C5F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{65BCE920-5DC1-4688-92ED-953DB0EFEDAF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{65BCE920-5DC1-4688-92ED-953DB0EFEDAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{65BCE920-5DC1-4688-92ED-953DB0EFEDAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{65BCE920-5DC1-4688-92ED-953DB0EFEDAF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
