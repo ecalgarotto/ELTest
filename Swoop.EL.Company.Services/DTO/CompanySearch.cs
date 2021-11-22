@@ -9,12 +9,9 @@ namespace Swoop.EL.Company.DAL.DTO
     [ExcludeFromCodeCoverage]
     public class CompanySearch
     {
-        public string title { get; set; }
-
-        public string company_number { get; set; }
-
-        public DateTime date_of_creation { get; set; }
-
-        public Address address { get; set; }
+        public string Title { get; set; }
+        public string Company_number { get; set; }
+        public DateTime Date_of_creation { get; set; }
+        public Address Address { get; set; }
     }
 }

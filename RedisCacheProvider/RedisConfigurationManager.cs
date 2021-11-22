@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Text;
@@ -9,15 +10,18 @@ namespace RedisCacheProvider
     {
         #region Constants
 
-        private const string SectionName = "RedisConfiguration";
-
-        public static RedisConfigurationSection Config
+        public RedisConfigurationManager(IConfiguration configuration)
         {
-            get
+            Config = new RedisConfigurationSection()
             {
-                return (RedisConfigurationSection)ConfigurationManager.GetSection(SectionName);
-            }
+                Host = configuration["RedisConfiguration:host"],
+                Port = int.Parse(configuration["RedisConfiguration:port"]),
+                Password = configuration["RedisConfiguration:password"],
+                DatabaseID = long.Parse(configuration["RedisConfiguration:databaseId"])
+            };
         }
+
+        public RedisConfigurationSection Config { get; }
 
         #endregion
     }

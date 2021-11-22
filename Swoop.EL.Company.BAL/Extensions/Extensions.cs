@@ -13,18 +13,18 @@ namespace Swoop.EL.Company.BAL.Extensions
 
             return new DTO.Company()
             {
-                Name = company.company_name,
+                Name = company.Company_name,
                 Address = new DTO.Address()
                 {
-                    Region = company.registered_office_address?.region,
-                    PostalCode = company.registered_office_address?.postal_code,
-                    Locality = company.registered_office_address?.locality,
-                    Country = company.registered_office_address?.country,
-                    AddressLine1 = company.registered_office_address?.address_line_1,
-                    AddressLine2 = company.registered_office_address?.address_line_2
+                    Region = company.Registered_office_address?.Region,
+                    PostalCode = company.Registered_office_address?.Postal_code,
+                    Locality = company.Registered_office_address?.Locality,
+                    Country = company.Registered_office_address?.Country,
+                    AddressLine1 = company.Registered_office_address?.Address_line_1,
+                    AddressLine2 = company.Registered_office_address?.Address_line_2
                 },
-                CompanyAge = company.age,
-                RegistrationNumber = company.company_number
+                CompanyAge = company.Age,
+                RegistrationNumber = company.Company_number
             };
         }
 
@@ -35,9 +35,9 @@ namespace Swoop.EL.Company.BAL.Extensions
 
             return new DTO.Officer()
             {
-                Name = officer.name,
-                DateOfBirth = new DateTime(officer.date_of_birth.year, officer.date_of_birth.month, 1),
-                Role = officer.officer_role
+                Name = officer.Name,
+                DateOfBirth = officer.Date_of_birth != null ? new DTO.DOB() { Year = officer.Date_of_birth.Year, Month = officer.Date_of_birth.Month } : default,
+                Role = officer.Officer_role
             };
         }
     }

@@ -1,6 +1,8 @@
+using Microsoft.Extensions.Logging;
 using Moq;
 using Swoop.EL.Company.BAL.Interfaces;
 using Swoop.EL.Company.BAL.Services;
+using Swoop.EL.Company.Common.Cache;
 using Swoop.EL.Company.DAL.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -19,9 +21,9 @@ namespace Swoop.EL.Company.BAL.Tests
 
             List<DAL.DTO.Company> companies = new List<DAL.DTO.Company>()
             {
-                new DAL.DTO.Company(){ company_name = "COMPANY 1", company_number = "11111", date_of_creation = new DateTime(2021, 01, 01)},
-                new DAL.DTO.Company(){ company_name = "COMPANY 2", company_number = "22222", date_of_creation = new DateTime(2021, 02, 02)},
-                new DAL.DTO.Company(){ company_name = "ANOTHER COMPANY", company_number = "33333", date_of_creation = new DateTime(2021, 03, 03)}
+                new DAL.DTO.Company(){ Company_name = "COMPANY 1", Company_number = "11111", Date_of_creation = new DateTime(2021, 01, 01)},
+                new DAL.DTO.Company(){ Company_name = "COMPANY 2", Company_number = "22222", Date_of_creation = new DateTime(2021, 02, 02)},
+                new DAL.DTO.Company(){ Company_name = "ANOTHER COMPANY", Company_number = "33333", Date_of_creation = new DateTime(2021, 03, 03)}
             };
 
             companyRepository.Setup(c => c.GetCompaniesByName(It.IsAny<string>()))
@@ -46,7 +48,7 @@ namespace Swoop.EL.Company.BAL.Tests
             companyRepository.Setup(c => c.SearchCompany(null, It.IsAny<string>()))
                 .Throws<ArgumentException>();
 
-            companyService = new CompanyService(companyRepository.Object);
+            companyService = new CompanyService(companyRepository.Object, new EmptyCache(), new Mock<ILogger<CompanyService>>().Object);
         }
 
         [Fact]

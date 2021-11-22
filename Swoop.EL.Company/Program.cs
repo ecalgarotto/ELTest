@@ -20,7 +20,15 @@ namespace Swoop.EL.Company
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseStartup<Startup>();
+                    webBuilder
+                    .ConfigureLogging((hostingContext, logging) =>
+                    {
+                        logging.ClearProviders();
+
+                        logging.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
+                    })
+                    .UseStartup<Startup>();
+
                 });
     }
 }

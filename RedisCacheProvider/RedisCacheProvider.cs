@@ -1,4 +1,5 @@
-﻿using ServiceStack.Redis;
+﻿using Microsoft.Extensions.Configuration;
+using ServiceStack.Redis;
 using Swoop.EL.Company.Common.Cache;
 using System;
 
@@ -6,11 +7,16 @@ namespace RedisCacheProvider
 {
     public class RedisCacheProvider : ICacheProvider
     {
-        RedisEndpoint _endPoint;
+        readonly RedisEndpoint endPoint;
 
-        public RedisCacheProvider()
+        public bool Enabled { get; }
+
+        public int ExpiresInHours { get; }
+        public RedisCacheProvider(IConfiguration configuration)
         {
-            _endPoint = new RedisEndpoint(RedisConfigurationManager.Config.Host, RedisConfigurationManager.Config.Port, RedisConfigurationManager.Config.Password, RedisConfigurationManager.Config.DatabaseID);
+            var config = new RedisConfigurationManager(configuration);
+            endPoint = new RedisEndpoint(config.Config.Host, config.Config.Port, config.Config.Password, config.Config.DatabaseID);
+            Enabled = true;
         }
 
         public void Set<T>(string key, T value)
@@ -20,7 +26,7 @@ namespace RedisCacheProvider
 
         public void Set<T>(string key, T value, TimeSpan timeout)
         {
-            using (RedisClient client = new RedisClient(_endPoint))
+            using (RedisClient client = new RedisClient(endPoint))
             {
                 client.As<T>().SetValue(key, value, timeout);
             }
@@ -30,7 +36,7 @@ namespace RedisCacheProvider
         {
             T result = default(T);
 
-            using (RedisClient client = new RedisClient(_endPoint))
+            using (RedisClient client = new RedisClient(endPoint))
             {
                 var wrapper = client.As<T>();
 
@@ -44,7 +50,7 @@ namespace RedisCacheProvider
         {
             bool removed = false;
 
-            using (RedisClient client = new RedisClient(_endPoint))
+            using (RedisClient client = new RedisClient(endPoint))
             {
                 removed = client.Remove(key);
             }
@@ -56,7 +62,7 @@ namespace RedisCacheProvider
         {
             bool isInCache = false;
 
-            using (RedisClient client = new RedisClient(_endPoint))
+            using (RedisClient client = new RedisClient(endPoint))
             {
                 isInCache = client.ContainsKey(key);
             }

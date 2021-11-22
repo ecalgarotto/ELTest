@@ -6,6 +6,10 @@ namespace Swoop.EL.Company.Common.Cache
 {
     public interface ICacheProvider
     {
+        bool Enabled { get; }
+
+        int ExpiresInHours { get; }
+
         void Set<T>(string key, T value);
 
         void Set<T>(string key, T value, TimeSpan timeout);
