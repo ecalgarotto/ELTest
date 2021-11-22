@@ -6,8 +6,8 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:3.1 AS build
 WORKDIR /src
-RUN echo pwd
-COPY ["Swoop.EL.Company/Swoop.EL.Company.UI.csproj", "Swoop.EL.Company/"]
+COPY . .
+#COPY ["Swoop.EL.Company/Swoop.EL.Company.UI.csproj", "Swoop.EL.Company/"]
 RUN dotnet restore "Swoop.EL.Company/Swoop.EL.Company.UI.csproj"
 COPY . .
 WORKDIR "/src/Swoop.EL.Company"
