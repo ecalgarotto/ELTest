@@ -1,7 +1,14 @@
-name: .NET Core CI
+name: CI
 
-on: [push]
-
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+    
+  workflow_dispatch:
 env:
   AZURE_WEBAPP_NAME: SwoopEL
   AZURE_WEBAPP_PACKAGE_PATH: './Swoop.EL.Company'      # set this to the path to your web app project, defaults to the repository root
@@ -32,13 +39,14 @@ jobs:
       - name: App Settings Variable Substitution
         uses: microsoft/variable-substitution@v1
         with:
-          files: 'myapp/appsettings.json'
+          files: './Swoop.EL.Company/myapp/appsettings.json'
         env:
-          CustomAppSettings.ApiURL: ${{ secrets.CustomAppSettings_ApiURL }}
-          CustomAppSettings.ApiKey: ${{ env.CustomAppSettings_ApiKey }}
-          CacheAppSettings.CacheProvider: ${{ env.CustomAppSettings_ApiKey }}
-          CacheAppSettings.Provider: ${{ env.CustomAppSettings_ApiKey }}
-          CacheAppSettings.Enabled: false
+          ApplicationInsights.InstrumentationKey:  ${{ secrets.APPLICATIONINSIGHTS_INSTRUMENTATIONKEY }}
+          CustomAppSettings.ApiURL: ${{ secrets.CUSTOMAPPSETTINGS_APIURL }}
+          CustomAppSettings.ApiKey: ${{ secrets.CUSTOMAPPSETTINGS_APIKEY }}
+          CacheAppSettings.CacheProvider: ${{ secrets.CACHEAPPSETTINGS_CACHEPROVIDER }}
+          CacheAppSettings.Provider: ${{ secrets.CACHEAPPSETTINGS_PROVIDER }}
+          CacheAppSettings.Enabled: ${{ secrets.CACHEAPPSETTINGS_ENABLED }}
 
       # Deploy to Azure Web apps
       - name: 'Run Azure webapp deploy action using publish profile credentials'
