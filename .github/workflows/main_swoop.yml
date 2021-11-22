@@ -46,6 +46,18 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: .net-app
+          
+      - name: App Settings Variable Substitution
+        uses: microsoft/variable-substitution@v1
+        with:
+          files: './appsettings.json'
+        env:
+          ApplicationInsights.InstrumentationKey: ${{ secrets.APPLICATIONINSIGHTS_INSTRUMENTATIONKEY }}
+          CustomAppSettings.ApiURL: ${{ secrets.CUSTOMAPPSETTINGS_APIURL }}
+          CustomAppSettings.ApiKey: ${{ secrets.CUSTOMAPPSETTINGS_APIKEY }}
+          CacheAppSettings.CacheProvider: ${{ secrets.CACHEAPPSETTINGS_CACHEPROVIDER }}
+          CacheAppSettings.Provider: ${{ secrets.CACHEAPPSETTINGS_PROVIDER }}
+          CacheAppSettings.Enabled: ${{ secrets.CACHEAPPSETTINGS_ENABLED }}
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
