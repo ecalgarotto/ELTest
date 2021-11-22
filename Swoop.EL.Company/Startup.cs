@@ -31,6 +31,8 @@ namespace Swoop.EL.Company
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddApplicationInsightsTelemetry();
+
             services.AddControllers();
 
             services.AddLogging();
