@@ -28,6 +28,18 @@ jobs:
           dotnet build --configuration Release
           dotnet publish -c Release -o '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/myapp' 
           
+      #substitute production appsettings entries to appsettings json file
+      - name: App Settings Variable Substitution
+        uses: microsoft/variable-substitution@v1
+        with:
+          files: 'myapp/appsettings.json'
+        env:
+          CustomAppSettings.ApiURL: ${{ secrets.CustomAppSettings_ApiURL }}
+          CustomAppSettings.ApiKey: ${{ env.CustomAppSettings_ApiKey }}
+          CacheAppSettings.CacheProvider: ${{ env.CustomAppSettings_ApiKey }}
+          CacheAppSettings.Provider: ${{ env.CustomAppSettings_ApiKey }}
+          CacheAppSettings.Enabled: false
+
       # Deploy to Azure Web apps
       - name: 'Run Azure webapp deploy action using publish profile credentials'
         uses: azure/webapps-deploy@v2
