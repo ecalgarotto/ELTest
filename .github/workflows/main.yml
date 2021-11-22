@@ -43,6 +43,7 @@ jobs:
         with:
           files: './Swoop.EL.Company/myapp/appsettings.json'
         env:
+          ApplicationInsights.InstrumentationKey: ${{ secrets.APPLICATIONINSIGHTS_INSTRUMENTATIONKEY }}
           CustomAppSettings.ApiURL: ${{ secrets.CUSTOMAPPSETTINGS_APIURL }}
           CustomAppSettings.ApiKey: ${{ secrets.CUSTOMAPPSETTINGS_APIKEY }}
           CacheAppSettings.CacheProvider: ${{ secrets.CACHEAPPSETTINGS_CACHEPROVIDER }}
