@@ -41,7 +41,7 @@ jobs:
       - name: App Settings Variable Substitution
         uses: microsoft/variable-substitution@v1
         with:
-          files: 'myapp/appsettings.json'
+          files: './Swoop.EL.Company/myapp/appsettings.json'
         env:
           CustomAppSettings.ApiURL: ${{ secrets.CustomAppSettings_ApiURL }}
           CustomAppSettings.ApiKey: ${{ env.CustomAppSettings_ApiKey }}
