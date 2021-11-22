@@ -11,7 +11,6 @@ on:
     branches: [ main ]
     
   workflow_dispatch:
-
 env:
   AZURE_WEBAPP_NAME: SwoopEL
   AZURE_WEBAPP_PACKAGE_PATH: './Swoop.EL.Company'      # set this to the path to your web app project, defaults to the repository root
@@ -38,6 +37,18 @@ jobs:
           dotnet build --configuration Release
           dotnet publish -c Release -o '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/myapp' 
           
+      #substitute production appsettings entries to appsettings json file
+      - name: App Settings Variable Substitution
+        uses: microsoft/variable-substitution@v1
+        with:
+          files: 'myapp/appsettings.json'
+        env:
+          CustomAppSettings.ApiURL: ${{ secrets.CustomAppSettings_ApiURL }}
+          CustomAppSettings.ApiKey: ${{ env.CustomAppSettings_ApiKey }}
+          CacheAppSettings.CacheProvider: ${{ env.CustomAppSettings_ApiKey }}
+          CacheAppSettings.Provider: ${{ env.CustomAppSettings_ApiKey }}
+          CacheAppSettings.Enabled: ${{ env.CustomAppSettings_Enabled }}
+
       # Deploy to Azure Web apps
       - name: 'Run Azure webapp deploy action using publish profile credentials'
         uses: azure/webapps-deploy@v2
