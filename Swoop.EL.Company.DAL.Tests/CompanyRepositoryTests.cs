@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using Moq;
 using Swoop.EL.Company.Common;
 using Swoop.EL.Company.DAL.DTO;
@@ -42,7 +43,7 @@ namespace Swoop.EL.Company.DAL.Tests
                 ApiURL = "https://api.company-information.service.gov.uk",
                 ApiKey = "123",
                 NumberOfRecords = 5
-            }, mockOfficerRepository.Object);
+            }, mockOfficerRepository.Object, new Mock<ILogger<CompanyRepository>>().Object);
             companyRepository = mockCompanyRepository.Object;
             
         }
